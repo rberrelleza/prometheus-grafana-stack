@@ -1,0 +1,88 @@
+replicas: 1
+
+rbac:
+  pspEnabled: false
+  namespaced: true
+  create: false
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+enableServiceLinks: false
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: &datasourcePrometheus Prometheus
+        type: prometheus
+        url:
+        access: proxy
+        isDefault: true
+
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+      - name: "default"
+        orgId: 1
+        folder: ""
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /var/lib/grafana/dashboards/default
+
+dashboards:
+  default:
+    prometheus-stats:
+      gnetId: 2
+      revision: 2
+      datasource: *datasourcePrometheus
+    node-exporter-full:
+      gnetId: 1860
+      revision: 25
+      datasource: *datasourcePrometheus
+    kubernetes-cluster-monitoring:
+      gnetId: 315
+      revision: 3
+      datasource: *datasourcePrometheus
+
+grafana.ini:
+  security:
+    disable_initial_admin_creation: true
+    disable_gravatar: true
+  auth.anonymous:
+    enabled: true
+    hide_version: true
+    org_role: Editor
+  auth:
+    disable_login_form: true
+    disable_signout_menu: true
+  alerting:
+    enabled: false
+  unified_alerting:
+    enabled: false
+  paths:
+    data: /var/lib/grafana/
+    logs: /var/log/grafana
+    plugins: /var/lib/grafana/plugins
+    provisioning: /etc/grafana/provisioning
+  analytics:
+    check_for_updates: false
+    reporting_enabled: false
+  log:
+    mode: console
+  log.console:
+    format: json
+  grafana_net:
+    url: https://grafana.net
+  dataproxy:
+    logging: true
+  live:
+    max_connections: 0

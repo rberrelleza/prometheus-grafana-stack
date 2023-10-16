@@ -1,0 +1,9 @@
+icon: https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Prometheus_software_logo.svg/2066px-Prometheus_software_logo.svg.png
+
+deploy:
+  - name: Update helm catalog
+    command: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts && helm repo add grafana https://grafana.github.io/helm-charts && helm repo update
+  - name: Install Prometheus
+    command: helm upgrade --install prometheus prometheus-community/prometheus --version 15.0.2 -f prometheus/config.yaml --set serverFiles.prometheus\.yml.scrape_configs[0].authorization.credentials=${OKTETO_INSIGHTS_TOKEN} --set serverFiles.prometheus\.yml.scrape_configs[0].static_configs[0].targets=[${OKTETO_INSIGHTS_INSTANCE}]  --debug --wait
+  - name: Install grafana
+    command: helm upgrade --install grafana grafana/grafana --version 6.24.1 -f grafana/config.yaml --set 'datasources.datasources\.yaml.datasources[0].url=http://prometheus-server' --debug --wait
