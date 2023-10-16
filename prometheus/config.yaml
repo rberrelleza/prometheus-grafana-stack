@@ -5,8 +5,8 @@ server:
   persistentVolume:
     size: 10Gi
 
-kube-state-metrics:
-  disabled: true
+kubeStateMetrics:
+  enabled: false
 
 serverFiles:
   prometheus.yml:
