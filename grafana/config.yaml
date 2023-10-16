@@ -1,5 +1,10 @@
 replicas: 1
 
+ingress:
+  enabled: true
+  annotations:
+    dev.okteto.com/generate-host: "true"
+
 rbac:
   pspEnabled: false
   namespaced: true
@@ -19,9 +24,9 @@ datasources:
   datasources.yaml:
     apiVersion: 1
     datasources:
-      - name: &datasourcePrometheus Prometheus
+      - name: Prometheus
         type: prometheus
-        url:
+        url: http://prometheus-server
         access: proxy
         isDefault: true
 
@@ -37,21 +42,6 @@ dashboardProviders:
         editable: false
         options:
           path: /var/lib/grafana/dashboards/default
-
-dashboards:
-  default:
-    prometheus-stats:
-      gnetId: 2
-      revision: 2
-      datasource: *datasourcePrometheus
-    node-exporter-full:
-      gnetId: 1860
-      revision: 25
-      datasource: *datasourcePrometheus
-    kubernetes-cluster-monitoring:
-      gnetId: 315
-      revision: 3
-      datasource: *datasourcePrometheus
 
 grafana.ini:
   security:

@@ -1,3 +1,6 @@
+rbac:
+  create: false
+
 podSecurityPolicy:
   enabled: false
 
@@ -6,6 +9,15 @@ server:
     size: 10Gi
 
 kubeStateMetrics:
+  enabled: false
+
+alertmanager:
+  enabled: false
+
+pushgateway:
+  enabled: false
+
+nodeExporter:
   enabled: false
 
 serverFiles:
