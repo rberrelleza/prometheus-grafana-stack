@@ -4,6 +4,7 @@ ingress:
   enabled: true
   annotations:
     dev.okteto.com/generate-host: "true"
+    dev.okteto.com/private: "true"
 
 rbac:
   pspEnabled: false

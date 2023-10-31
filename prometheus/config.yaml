@@ -5,6 +5,12 @@ podSecurityPolicy:
   enabled: false
 
 server:
+  ingress:
+    enabled: true
+    annotations:
+      dev.okteto.com/generate-host: "true"
+      dev.okteto.com/private: "true"
+  
   persistentVolume:
     size: 10Gi
 
